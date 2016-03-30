@@ -1,0 +1,14 @@
+{# app/Resources/views/userlist.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Users</h1>
+    <table>
+    {% for user in users %}
+    <tr>
+        <td><a href="{{ path('_userDetail', {'slug': user.slug}) }}">{{ user.username }}</a></td>
+        <td><a target="imdb" href="http://www.imdb.com/user/ur{{ user.imdbid }}/">IMDB</a></td>
+    </tr>
+    {% endfor %}
+    <table>
+{% endblock %}

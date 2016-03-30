@@ -1,0 +1,23 @@
+{# app/Resources/views/userdetail.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1> {{ user.username }}</h1>
+    <a href="{{ path('_fetchRatings', {'slug': user.slug}) }}">fetch ratings<a/>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Rating</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for rating in user.ratings %}
+            <tr>
+                <td><a href="{{ path('_movieDetail', {'slug': rating.movie.slug}) }}">{{ rating.movie.title }}</a></td>
+                <td>{{ rating.movie.year }}</td>
+                <td>{{ rating.rating }}</td>
+                <td><a target="imdb" href="http://www.imdb.com/title/tt{{ rating.movie.imdbId }}">IMDB</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+{% endblock %}
