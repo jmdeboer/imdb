@@ -4,38 +4,48 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="User")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\UserRepository")
+ * @ORM\Table(name="`User`")
  */
-class User {
-
+class User extends BaseUser
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-	private $id;
+	protected $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-	private $username;
-
-    /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string")
      */
 	private $fullname;
 	
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", nullable=true)
+     */
+	private $imdbUsername;
+
+	/**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Please enter your IMDB id.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="The IMDB id is too short.",
+     *     maxMessage="The IMDB id is too long.",
+     *     groups={"Registration", "Profile"}
+     * )
      */
 	private $imdbId;
 
     /**
      * @Gedmo\Slug(fields={"username"}, updatable=false)
-     * @ORM\Column(length=128, unique=true)
+     * @ORM\Column(unique=true)
      */
 	private $slug;
 	
@@ -46,6 +56,7 @@ class User {
 
     public function __construct()
     {
+        parent::__construct();
         $this->ratings = new ArrayCollection();
     }
     
@@ -189,5 +200,29 @@ class User {
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set imdbUsername
+     *
+     * @param string $imdbUsername
+     *
+     * @return User
+     */
+    public function setImdbUsername($imdbUsername)
+    {
+        $this->imdbUsername = $imdbUsername;
+
+        return $this;
+    }
+
+    /**
+     * Get imdbUsername
+     *
+     * @return string
+     */
+    public function getImdbUsername()
+    {
+        return $this->imdbUsername;
     }
 }

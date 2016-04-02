@@ -13,7 +13,7 @@
     <tr>
         <td><a href="{{ path('_movieDetail', {'slug': movie.slug}) }}">{{ movie.title }}</a></td>
         <td>{{ movie.year }}</td>
-        <td><a href="http://www.imdb.com/title/tt{{ movie.imdbId }}/">IMDB</a></td>
+        <td><a href="{{ movie.imdbLink }}">IMDB</a></td>
     </tr>
     {% endfor %}
     <table>

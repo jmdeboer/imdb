@@ -56,9 +56,13 @@ class UserController extends Controller
     	->getRepository('AppBundle:User')
     	->findOneBySlug($slug);
     	
-    	$url = sprintf("http://rss.imdb.com/user/ur%d/ratings", $user->getImdbId());
+    	$url = sprintf("http://rss.imdb.com/user/%s/ratings", $user->getImdbId());
     	$rss = file_get_contents($url);
     	$data = simplexml_load_string($rss);
+
+    	preg_match("/(.+)'s Ratings/", $data->channel->title, $matches);
+    	$imdbUsername = $matches[1];
+    	$user->setImdbUsername($imdbUsername);
     	
     	foreach($data->channel->item as $moviedata)
     	{
@@ -67,7 +71,7 @@ class UserController extends Controller
     		$year = $matches[2];
     		preg_match("/.+ rated this ([0-9]+)\./", $moviedata->description, $matches);
     		$movieRating = $matches[1];
-    		preg_match("/.+imdb\.com\/title\/tt([0-9]+)/", $moviedata->guid, $matches);
+    		preg_match("/.+imdb\.com\/title\/(tt[0-9]+)/", $moviedata->guid, $matches);
     		$imdbId = $matches[1];
 
         	$em = $this->getDoctrine()->getManager();
@@ -102,10 +106,10 @@ class UserController extends Controller
     		$em->flush();    		
     	}
     	
+    	$this->get('session')->getFlashBag()->add('notice', sprintf('Ratings for %s fetched.', $user->getUsername()));
     	
-    	$html = "";
+    	return $this->redirect($this->generateUrl('_userDetail', array('slug'=> $user->getSlug())));
 
-        return new Response($html);
     }
 
 }

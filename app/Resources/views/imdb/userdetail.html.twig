@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1> {{ user.username }}</h1>
+    <h1>{{ user.fullname }}</h1>
     <a href="{{ path('_fetchRatings', {'slug': user.slug}) }}">fetch ratings<a/>
         <table>
             <tr>

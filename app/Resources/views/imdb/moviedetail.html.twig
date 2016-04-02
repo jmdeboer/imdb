@@ -3,4 +3,14 @@
 
 {% block body %}
     <h1> {{ movie.title }}</h1>
+    <p>Year: {{ movie.year }}</p>
+    <p>IMDB: <a target="imdb" href="{{ movie.imdbLink }}">{{ movie.imdbLink }}</a></p>
+    <p>Average rating:</p>
+    <table>
+        {% for rating in movie.ratings %}
+        <tr>
+            <td><a href="{{ path('_userDetail', {'slug': rating.user.slug}) }}">{{ rating.user.username }}</a></td>
+            <td>{{ rating.rating }}</td>
+        </tr>
+        {% endfor %}
 {% endblock %}

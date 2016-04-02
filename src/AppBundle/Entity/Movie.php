@@ -6,7 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\MovieRepository")
  * @ORM\Table(name="Movie")
  */
 class Movie
@@ -30,7 +30,7 @@ class Movie
 	private $year;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
 	private $imdbId;
 
@@ -45,12 +45,31 @@ class Movie
      */
 	private $ratings;
 	
+	private $imdbLink;
+	
+	
 	public function __construct()
 	{
-		$this->ratings = new ArrayCollection();
+	    $this->ratings = new ArrayCollection();
 	}
-	
  
+    public function getAverageRating()
+    {
+    }
+    
+    public function getHighestRating()
+    {
+    }
+    
+    public function getLowestRating()
+    {
+    }
+    
+    public function getImdbLink()
+    {
+        return(sprintf("http://www.imdb.com/title/%s/", $this->getImdbId()));
+    }
+	
 	/**
      * Get id
      *

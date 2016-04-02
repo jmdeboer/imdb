@@ -41,9 +41,9 @@ twig:
 doctrine:
 doctrine:
     dbal:
-        default_table_options:
-            charset: utf8mb4
-            collate: utf8mb4_unicode_ci
+#        default_table_options:
+#            charset: utf8mb4
+#            collate: utf8mb4_unicode_ci
         driver:   pdo_mysql
         host:     "%database_host%"
         port:     "%database_port%"
@@ -76,4 +76,17 @@ stof_doctrine_extensions:
         default:
             sluggable:   true
             timestampable: true
+
+# app/config/config.yml
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    registration:
+        form:
+            type: AppBundle\Form\RegistrationType
+    profile:
+        form:
+            type: AppBundle\Form\ProfileFormType
+            
     
