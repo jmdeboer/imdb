@@ -5,7 +5,15 @@
     <h1> {{ movie.title }}</h1>
     <p>Year: {{ movie.year }}</p>
     <p>IMDB: <a target="imdb" href="{{ movie.imdbLink }}">{{ movie.imdbLink }}</a></p>
-    <p>Average rating:</p>
+    <p>Number of ratings: {{ movie.numberOfRatings }}</p>
+{% if movie.numberOfRatings == 1 %}
+    <p>Rating: {{ movie.averageRating }}</p>
+{% endif %}
+{% if movie.numberOfRatings > 1 %}
+    <p>Average rating: {{ movie.averageRating }}</p>
+    <p>Highest rating: {{ movie.highestRating }}</p>
+    <p>lowest rating: {{ movie.lowestRating }}</p>
+{% endif %}
     <table>
         {% for rating in movie.ratings %}
         <tr>

@@ -37,6 +37,12 @@ class MovieController extends Controller
     	->getRepository('AppBundle:Movie')
     	->findOneBySlug($slug);
     	
+    	$conn = $this->get('database_connection');
+    	$m = $conn->fetchAll('SELECT round(avg(rating), 1) as avg, max(rating) as max, min(rating) as min FROM Rating where movie = ' . $movie->getId());
+    	$movie->setAverageRating($m[0]['avg']);
+    	$movie->setHighestRating($m[0]['max']);
+    	$movie->setLowestRating($m[0]['min']);
+    	
     	$html = $this->container->get('templating')->render(
             'imdb/moviedetail.html.twig',
             array('movie' => $movie)

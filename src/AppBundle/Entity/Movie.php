@@ -1,15 +1,17 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\Movie;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\MovieRepository")
  * @ORM\Table(name="Movie")
  */
-class Movie
+class Movie extends EntityRepository
 {
 
     /**
@@ -45,24 +47,54 @@ class Movie
      */
 	private $ratings;
 	
-	private $imdbLink;
-	
-	
+
 	public function __construct()
 	{
 	    $this->ratings = new ArrayCollection();
 	}
  
-    public function getAverageRating()
+    public function getNumberOfRatings()
     {
+        return count($this->ratings);
     }
+
+    private $average_rating;
     
+	public function getAverageRating()
+    {
+	    return $this->average_rating;
+	}
+    
+	public function setAverageRating($rating)
+    {
+	    $this->average_rating = $rating;
+	    return $this;
+	}
+    
+	private $highest_rating;
+	
     public function getHighestRating()
     {
+	    return $this->highest_rating;
     }
+    
+    public function setHighestRating($rating)
+    {
+	    $this->highest_rating = $rating;
+	    return $this;
+    }
+    
+    private $lowest_rating;
     
     public function getLowestRating()
     {
+	    return $this->lowest_rating;
+    }
+    
+    public function setLowestRating($rating)
+    {
+	    $this->lowest_rating = $rating;
+	    return $this;
     }
     
     public function getImdbLink()
@@ -209,4 +241,5 @@ class Movie
     {
         return $this->slug;
     }
+
 }
